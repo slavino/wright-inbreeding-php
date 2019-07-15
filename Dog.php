@@ -205,6 +205,7 @@ class Dog implements \JsonSerializable {
         $ancestors = array();
         $duplicates = array();
         $treeDuplicates = array();
+        $commonAncestorsCodes = array();
         $wrightSummationRelevantDuplicates = array();
         $wrightIndividualRelevantDuplicates = array();
 
@@ -216,6 +217,7 @@ class Dog implements \JsonSerializable {
                 foreach ($this->tree as $treeKey => $treeItem) {
                     if($treeItem->getId() == $val->getId()) {
                         $treeDuplicates[$treeDupesCount][$treeKey] = $treeItem;
+                        $commonAncestorsCodes[] = $treeKey;
                     }
                 }
                 $treeDupesCount++;
@@ -235,7 +237,8 @@ class Dog implements \JsonSerializable {
                     }
                 }
 
-                $treelevels = Dog::isolateSummationTree($treelevels);
+                $treelevels = Dog::isolateSummationTree($treelevels, $commonAncestorsCodes);
+
                 if($treelevels != null) {
                     $wrightSummationRelevantDuplicates[] = $treelevels;
                 } else {
@@ -245,14 +248,13 @@ class Dog implements \JsonSerializable {
 
             foreach ($wrightSummationRelevantDuplicates as $xxDuplicate) {
                 foreach($xxDuplicate as $xDuplicate) {
-                    $this->wrightIndex += pow(0.5, (strlen($xDuplicate[0])-1) + (strlen($xDuplicate[1])-1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
+                    $this->wrightIndex += pow(0.5, (strlen($xDuplicate[0]) - 1) + (strlen($xDuplicate[1]) - 1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
                 }
             }
 
         } else {
             $this->wrightIndex = 0;
         }
-
 
         if($debug) {
             echo json_encode(
@@ -261,6 +263,7 @@ class Dog implements \JsonSerializable {
                         "ancestors" => $ancestors,
                         "duplicates" => $duplicates,
                         "treeDuplicates" => $treeDuplicates,
+                        "commonAncestorsCodes" => $commonAncestorsCodes,
                         "wrightSummationRelevantDuplicates" => $wrightSummationRelevantDuplicates,
                         "wrightIndividualRelevantDuplicates" => $wrightIndividualRelevantDuplicates
                     )
@@ -269,16 +272,22 @@ class Dog implements \JsonSerializable {
 
     }
 
-    private static function isolateSummationTree($treelevels = array()) {
+    private static function isolateSummationTree($treelevels = array(), $commonAncestorsCodes = array()) {
+
+        asort($commonAncestorsCodes);
+
         $fatherLine = array();
         $motherLine = array();
+
         foreach ($treelevels as $val) {
-            if(substr($val,0,1) == "f") {
-                $fatherLine[] = $val;
-                asort($fatherLine);
-            } else {
-                $motherLine[] = $val;
-                asort($motherLine);
+            if(!in_array(substr($val,0 , strlen($val)-1),$commonAncestorsCodes)) {
+                if(substr($val,0,1) == "f") {
+                    $fatherLine[] = $val;
+                    asort($fatherLine);
+                } else {
+                    $motherLine[] = $val;
+                    asort($motherLine);
+                }
             }
         }
 

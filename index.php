@@ -8,10 +8,14 @@ error_reporting(E_ALL);
 require_once "Sex.php";
 require_once "Dog.php";
 
+//LEVEL 5
+$fffmff = new Dog(100, "FATHER of BROK Veľká voda" , Sex::MALE, "SPKP0231/12");
+$fffmfm = new Dog(101, "MOTHER of BROK Veľká voda" , Sex::FEMALE, "SPKP0233/12");
+
 //LEVEL 4
 $fffff = new Dog(1, "BUK od Kopčana" , Sex::MALE, "SPKP11231/17");
 $ffffm = new Dog(2, "CHETA z Radomskej doliny" , Sex::FEMALE,"SPKP11211/17");
-$fffmf = new Dog(3, "BROK Veľká voda" , Sex::MALE, "SPKP11231/17");
+$fffmf = new Dog(3, "BROK Veľká voda" , Sex::MALE, "SPKP11231/17", $fffmff, $fffmfm);
 $fffmm = new Dog(4, "BÁRA z Imriškovho dvora" , Sex::FEMALE,"SPKP11211/17");
 $ffmff = new Dog(5, "JASMIN spod Hostihory" , Sex::MALE, "SPKP11231/17");
 $ffmfm = new Dog(6, "NORA spod Hostihory" , Sex::FEMALE,"SPKP11211/17");
@@ -28,7 +32,7 @@ $fmmmm = new Dog(16, "MINA z Laščíka" , Sex::FEMALE,"SPKP11211/17");
 
 $mffff = new Dog(17, "KAM z Hámra" , Sex::MALE, "SPKP11231/17");
 $mfffm = new Dog(18, "MONA Krššákov dvor" , Sex::FEMALE,"SPKP11211/17");
-$mffmf = new Dog(3, "BROK Veľká voda" , Sex::MALE, "SPKP11231/17");
+$mffmf = new Dog(3, "BROK Veľká voda" , Sex::MALE, "SPKP11231/17", $fffmff, $fffmfm);
 $mffmm = new Dog(14, "INKA z Hámra" , Sex::FEMALE,"SPKP11211/17");
 $mfmff = new Dog(21, "ARGO z Chlebníc" , Sex::MALE, "SPKP11231/17");
 $mfmfm = new Dog(22, "ALBA z Dedinského potoka" , Sex::FEMALE,"SPKP11211/17");
