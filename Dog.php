@@ -1,5 +1,6 @@
 <?php
 
+require_once "Logger.php";
 
 class Dog implements \JsonSerializable {
 
@@ -19,6 +20,8 @@ class Dog implements \JsonSerializable {
 
     private $wrightIndex;
 
+    private $logger;
+
     public function __construct($id, $name, $sex, $uuid, Dog $father = NULL, Dog $mother = NULL, $wrightIndex = NULL) {
         $this->id = $id;
         $this->name = $name;
@@ -31,6 +34,10 @@ class Dog implements \JsonSerializable {
             $this->mother = $mother;
         }
         $this->wrightIndex = $wrightIndex;
+
+        $time = date('d-M-Y-H_i_s');
+        //Using timestamp in file name, e.g. log-02-06-2016.txt
+        $this->logger = new Logger('log-' . $time . '.txt');
     }
 
     /**
@@ -248,6 +255,7 @@ class Dog implements \JsonSerializable {
 
             foreach ($wrightSummationRelevantDuplicates as $xxDuplicate) {
                 foreach($xxDuplicate as $xDuplicate) {
+                    $this->logger->info("Wright Index sum element: '" . $xDuplicate[0] . "' and '" . $xDuplicate[1] . "' with it's own WrightIndex: " . ($this->tree[$xDuplicate[0]])->getWrightIndex());
                     $this->wrightIndex += pow(0.5, (strlen($xDuplicate[0]) - 1) + (strlen($xDuplicate[1]) - 1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
                 }
             }
