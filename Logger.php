@@ -14,6 +14,14 @@
 
 class Logger {
 
+    const DEBUG = 1;
+    const INFO = 2;
+    const WARNING = 3;
+    const ERROR = 4;
+    const NONE = 5;
+
+    protected $level = 0;
+
     /**
      * $log_file - path and log file name
      * @var string
@@ -60,8 +68,10 @@ class Logger {
      * @param string $message
      * @return void
      */
-    public function info($message){
-        $this->writeLog($message, 'INFO');
+    public function info($message) {
+        if($this->level <= self::INFO) {
+            $this->writeLog($message, 'INFO');
+        }
     }
 
     /**
@@ -69,8 +79,10 @@ class Logger {
      * @param string $message
      * @return void
      */
-    public function debug($message){
-        $this->writeLog($message, 'DEBUG');
+    public function debug($message) {
+        if($this->level <= self::DEBUG) {
+            $this->writeLog($message, 'DEBUG');
+        }
     }
 
     /**
@@ -79,7 +91,9 @@ class Logger {
      * @return void
      */
     public function warning($message){
-        $this->writeLog($message, 'WARNING');
+        if($this->level <= self::WARNING) {
+            $this->writeLog($message, 'WARNING');
+        }
     }
 
     /**
@@ -88,7 +102,9 @@ class Logger {
      * @return void
      */
     public function error($message){
-        $this->writeLog($message, 'ERROR');
+        if($this->level <= self::ERROR) {
+            $this->writeLog($message, 'ERROR');
+        }
     }
 
     /**
@@ -130,4 +146,23 @@ class Logger {
             fclose($this->file);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     */
+    public function setLevel($level) {
+        if(in_array($level, array(self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::NONE))) {
+            $this->level = $level;
+        }
+    }
+
+
 }

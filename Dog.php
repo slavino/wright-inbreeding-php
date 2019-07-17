@@ -38,6 +38,7 @@ class Dog implements \JsonSerializable {
         $time = date('d-M-Y-H_i_s');
         //Using timestamp in file name, e.g. log-02-06-2016.txt
         $this->logger = new Logger('log-' . $time . '.txt');
+        $this->logger->setLevel(Logger::DEBUG);
     }
 
     /**
@@ -208,6 +209,7 @@ class Dog implements \JsonSerializable {
     }
 
     public function calculateWrightIndex($debug = false) {
+        $this->logger->debug("#calculateWrightIndex(): Entering method");
         $this->wrightIndex = 0;
         $ancestors = array();
         $duplicates = array();
@@ -256,7 +258,9 @@ class Dog implements \JsonSerializable {
             foreach ($wrightSummationRelevantDuplicates as $xxDuplicate) {
                 foreach($xxDuplicate as $xDuplicate) {
                     $this->logger->info("Wright Index sum element: '" . $xDuplicate[0] . "' and '" . $xDuplicate[1] . "' with it's own WrightIndex: " . ($this->tree[$xDuplicate[0]])->getWrightIndex());
-                    $this->wrightIndex += pow(0.5, (strlen($xDuplicate[0]) - 1) + (strlen($xDuplicate[1]) - 1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
+                    $additionToSum = pow(0.5, (strlen($xDuplicate[0]) - 1) + (strlen($xDuplicate[1]) - 1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
+                    $this->logger->info("adding 0.5 ^ (" .  (strlen($xDuplicate[0]) - 1) . " + " . (strlen($xDuplicate[1]) - 1) . " +1) * (1 + " . ($this->tree[$xDuplicate[0]])->getWrightIndex() . ")");
+                    $this->wrightIndex += $additionToSum;
                 }
             }
 
@@ -277,7 +281,7 @@ class Dog implements \JsonSerializable {
                     )
             );
         }
-
+        $this->logger->debug("#calculateWrightIndex(): Leaving method for Dog " . json_encode($this));
     }
 
     private static function isolateSummationTree($treelevels = array(), $commonAncestorsCodes = array()) {
