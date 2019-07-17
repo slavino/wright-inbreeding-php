@@ -39,6 +39,11 @@ class Dog implements \JsonSerializable {
         //Using timestamp in file name, e.g. log-02-06-2016.txt
         $this->logger = new Logger('log-' . $time . '.txt');
         $this->logger->setLevel(Logger::DEBUG);
+        $this->logger->debug("new Dog(" . $id . ",'" . $name . "', '" . $sex . "', '" . $uuid
+                                        . "', "
+                                        . ($father==NULL?"NULL":"new Dog(" . $father->getId() .",'" . $father->getName() . "','" . $father->getSex() . "','" . $father->getUuid() . "')") . " , "
+                                        . ($mother==NULL?"NULL":"new Dog(" . $mother->getId() .",'" . $mother->getName() . "','" . $mother->getSex() . "','" . $mother->getUuid() . "')") . " , "
+                                        . ($wrightIndex==NULL?"NULL":$wrightIndex) . ");");
     }
 
     /**
@@ -310,7 +315,7 @@ class Dog implements \JsonSerializable {
         $resultArray = array();
         foreach ($fatherLine as $father) {
             foreach ($motherLine as $mother) {
-                $resultArray[] = array($father, $mother);
+                $resultArray[$father.".".$mother] = array($father, $mother);
             }
         }
 
