@@ -262,7 +262,7 @@ class Dog implements \JsonSerializable {
 
             foreach ($wrightSummationRelevantDuplicates as $xxDuplicate) {
                 foreach($xxDuplicate as $xDuplicate) {
-                    $this->logger->info("Wright Index sum element: '" . $xDuplicate[0] . "' and '" . $xDuplicate[1] . "' with it's own WrightIndex: " . ($this->tree[$xDuplicate[0]])->getWrightIndex());
+                    $this->logger->info("Wright Index sum element: '" . $xDuplicate[0] . "'(" . $this->tree[$xDuplicate[0]]->name . ") and '" . $xDuplicate[1] . "'(" . $this->tree[$xDuplicate[1]]->name . ") with it's own WrightIndex: " . ($this->tree[$xDuplicate[0]])->getWrightIndex());
                     $additionToSum = pow(0.5, (strlen($xDuplicate[0]) - 1) + (strlen($xDuplicate[1]) - 1) + 1) * (1 + ($this->tree[$xDuplicate[0]])->getWrightIndex());
                     $this->logger->info("adding 0.5 ^ (" .  (strlen($xDuplicate[0]) - 1) . " + " . (strlen($xDuplicate[1]) - 1) . " +1) * (1 + " . ($this->tree[$xDuplicate[0]])->getWrightIndex() . ")");
                     $this->wrightIndex += $additionToSum;
